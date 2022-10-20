@@ -29,9 +29,9 @@ route.get("/", async (ctx, next) => {
 })
 route.post('/', async (ctx) => {
     try {
-        let {name} = ctx.request.body;
-        console.log(name);
-        let newTask = await ctx.db.models.Task.create({name: name})
+        let {name, body} = ctx.request.body;
+        // console.log(name);
+        let newTask = await ctx.db.models.Task.create({name: name, body: body})
 
         ctx.body = newTask
 
@@ -44,9 +44,11 @@ route.put('/:id', async (ctx) => {
     try {
         let updateData = ctx.request.body
         if(!ctx.request.body.name) {
-            updateData = {state: updateData.state}
+            updateData = {state: updateData.state, body: updateData.body}
         }
-
+        if(!ctx.request.body.body) {
+            updateData = {state: updateData.state, name: updateData.name}
+        }
         let result = await ctx.db.models.Task.update(updateData, {
             where: {
                 id: ctx.params.id

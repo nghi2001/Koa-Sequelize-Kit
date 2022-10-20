@@ -4,6 +4,11 @@ module.exports = (sequelize, Type) => {
             type: Type.STRING,
             allowNull: false
         },
+        body: {
+            type: Type.STRING,
+            allowNull: false
+        }
+        ,
         state: {
             type: Type.STRING,
             allowNull: false,

@@ -14,7 +14,8 @@ POST http://localhost:3000/task
 content-type: application/json
 
 {
-    "name": "bao cao KOA"
+    "name": "bao cao sequelize",
+    "body": "test"
 }
 
 ###
@@ -26,4 +27,4 @@ Content-Type: application/json
     "state": "done"
 }
 ###
-DELETE  http://localhost:3000/task/2
+DELETE  http://localhost:3000/task/4
