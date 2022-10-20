@@ -44,7 +44,7 @@ exports.update = async (ctx) => {
     try {
         let id = ctx.params.id;
         let { content } = ctx.request.body;
-        let result = await ctx.db.models.Comment.update({content: content}, {
+        let result = await ctx.db.models.Comment.update({ content: content }, {
             where: {
                 id: id
             }

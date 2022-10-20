@@ -1,8 +1,9 @@
 const env = process.env.NODE_ENV
 const dbConfig = require('../config/config.json')[env]
-const {Sequelize, DataTypes} = require('sequelize')
-console.log(env);
+const { Sequelize, DataTypes } = require('sequelize')
+
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+
 const TaskModel = require('./task.models')(sequelize, DataTypes);
 const CommentModel = require('./comment.model')(sequelize, DataTypes);
 
@@ -14,7 +15,7 @@ sequelize.authenticate()
     console.log(err);
   })
 
-TaskModel.hasMany(CommentModel, {as: 'comments', onDelete: "CASCADE"})
+TaskModel.hasMany(CommentModel, { as: 'comments', onDelete: "CASCADE" })
 CommentModel.belongsTo(TaskModel)
 
 const db = {
