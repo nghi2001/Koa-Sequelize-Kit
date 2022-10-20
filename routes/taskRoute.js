@@ -23,7 +23,7 @@ route.get("/:id", async (ctx, next) => {
 })
 
 route.get("/", async (ctx, next) => {
-    let tasks = await ctx.db.models.Task.findAndCountAll();
+    let tasks = await ctx.db.models.Task.findAndCountAll({include: 'comments'});
 
     ctx.body = tasks
 })
@@ -39,6 +39,23 @@ route.post('/', async (ctx) => {
         ctx.app.emit('error', error, ctx)
     }
 })
+// route.post('/time', async (ctx) => {
+//     try {
+//         var date = new Date();
+//         var dateStr =
+//         ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+//         ("00" + date.getDate()).slice(-2) + "/" +
+//         date.getFullYear() + " " +
+//         ("00" + date.getHours()).slice(-2) + ":" +
+//         ("00" + date.getMinutes()).slice(-2) + ":" +
+//         ("00" + date.getSeconds()).slice(-2);
+//         console.log(dateStr)
+//         ctx.body = dateStr
+
+//     } catch (error) {
+//         ctx.app.emit('error', error, ctx)
+//     }
+// })
 
 route.put('/:id', async (ctx) => {
     try {

@@ -17,7 +17,14 @@ content-type: application/json
     "name": "bao cao sequelize",
     "body": "test"
 }
+###
+POST http://localhost:3000/task/time
+content-type: application/json
 
+{
+    "name": "bao cao sequelize",
+    "body": "test"
+}
 ###
 PUT http://localhost:3000/task/1
 Content-Type: application/json
@@ -27,4 +34,18 @@ Content-Type: application/json
     "state": "done"
 }
 ###
-DELETE  http://localhost:3000/task/4
+DELETE  http://localhost:3000/task/1
+
+
+### /comment
+POST  http://localhost:3000/comment
+Content-Type: application/json
+
+{
+    "content": "test 456",
+    "TaskId": 1
+}
+###
+GET http://localhost:3000/comment/1
+###
+DELETE  http://localhost:3000/comment/7

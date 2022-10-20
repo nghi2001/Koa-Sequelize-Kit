@@ -7,6 +7,10 @@ module.exports = (sequelize, Type) => {
         body: {
             type: Type.STRING,
             allowNull: false
+        },
+        outDate: {
+            type: Type.DATE,
+            allowNull: true
         }
         ,
         state: {
