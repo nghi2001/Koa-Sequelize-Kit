@@ -1,0 +1,29 @@
+
+# init database
+GET http://localhost:3000/db/init
+
+# /task
+###
+
+GET http://localhost:3000/task
+
+###
+GET http://localhost:3000/task/3
+###
+POST http://localhost:3000/task
+content-type: application/json
+
+{
+    "name": "bao cao KOA"
+}
+
+###
+PUT http://localhost:3000/task/1
+Content-Type: application/json
+
+{
+    "name": "ajvnojadnvoadnvo",
+    "state": "done"
+}
+###
+DELETE  http://localhost:3000/task/2
