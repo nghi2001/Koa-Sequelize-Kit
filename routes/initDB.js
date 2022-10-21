@@ -3,14 +3,9 @@ const route = new Route({
     prefix: "/db"
 });
 
-route.get("/init", (ctx, next) => {
-    ctx.db.sequelize.sync({})
-        .then(() => {
-            ctx.body = 'success'
-        })
-        .catch((err) => {
-            ctx.body = err
-        })
+route.get("/init", async (ctx, next) => {
+    await ctx.db.sequelize.sync({})
+    ctx.body = 'success'
 })
 
 module.exports = route
