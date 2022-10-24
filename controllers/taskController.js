@@ -4,8 +4,8 @@ exports.findById = async (ctx, next) => {
     try {
         let id = ctx.params.id;
         let task = await TaskService.findOne(id)
-        if(!task) {
-            ctx.throw(404,'id not found')
+        if (!task) {
+            ctx.throw(404, 'id not found')
         }
         ctx.body = task
     } catch (error) {
@@ -25,8 +25,8 @@ exports.findAll = async (ctx, next) => {
 exports.create = async (ctx) => {
     let { name, body } = ctx.request.body;
     try {
-        let newTask = await TaskService.createTask({name,body})
-        if(newTask) {
+        let newTask = await TaskService.createTask({ name, body })
+        if (newTask) {
             ctx.status = 201
             return ctx.body = newTask
         }
@@ -41,8 +41,8 @@ exports.delete = async (ctx) => {
     try {
         let result = await TaskService.deleteTask(id)
         console.log(result);
-        if(result == 0) {
-            ctx.throw(404,'id not found')
+        if (result == 0) {
+            ctx.throw(404, 'id not found')
         }
         ctx.body = result
     } catch (error) {
@@ -55,8 +55,8 @@ exports.update = async (ctx) => {
         let updateData = ctx.request.body;
         let taskId = ctx.params.id;
         let result = await TaskService.updateTask(updateData, taskId);
-        if(result == 0) {
-            ctx.throw(404,'id not found')
+        if (result == 0) {
+            ctx.throw(404, 'id not found')
         }
         ctx.body = result;
 

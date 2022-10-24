@@ -13,7 +13,7 @@ exports.findAllComment = async (ctx, next) => {
 exports.createComment = async (ctx) => {
     let { content, TaskId } = ctx.request.body;
     try {
-        let comment = await CommentService.createComment({content,TaskId})
+        let comment = await CommentService.createComment({ content, TaskId })
         ctx.status = 201
         ctx.body = comment
     } catch (error) {
@@ -24,8 +24,8 @@ exports.delete = async (ctx) => {
     try {
         let id = ctx.params.id;
         let result = await CommentService.deleteComment(id)
-        if(result == 0) {
-            ctx.throw(404,'id not found')
+        if (result == 0) {
+            ctx.throw(404, 'id not found')
         }
         return ctx.body = result;
     } catch (error) {
@@ -38,8 +38,8 @@ exports.update = async (ctx) => {
         let id = ctx.params.id;
         let { content } = ctx.request.body;
         let result = await CommentService.updateComment(id, content)
-        if(result == 0) {
-            ctx.throw(404,'id not found')
+        if (result == 0) {
+            ctx.throw(404, 'id not found')
         }
         return ctx.body = result;
 

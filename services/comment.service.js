@@ -12,7 +12,7 @@ exports.checkId = (id) => {
 }
 exports.checkTaskExist = async (taskId) => {
     let task = await TaskService.findOne(taskId);
-    if(!task) {
+    if (!task) {
         let error = new Error("task not found");
         error.status = 200;
         throw error
@@ -32,7 +32,7 @@ exports.getCommentsByTaskId = async (id) => {
 }
 exports.checkCreateComment = (comment) => {
     let checkProp = comment.content && comment.TaskId;
-    if(!checkProp) {
+    if (!checkProp) {
         let error = new Error("content or Taskid is missing");
         error.status = 422;
         throw error
@@ -40,15 +40,15 @@ exports.checkCreateComment = (comment) => {
     return true
 }
 exports.createComment = async (comment) => {
-    if (this.checkCreateComment(comment)) {    
+    if (this.checkCreateComment(comment)) {
         await this.checkTaskExist(comment.TaskId)
-        let newComment = await CommentModel.create({ content: comment.content,TaskId: comment.TaskId });
+        let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId });
         return newComment
     }
 }
 
 exports.deleteComment = async (id) => {
-    if(this.checkId(id)) {
+    if (this.checkId(id)) {
         let result = await CommentModel.destroy({
             where: {
                 id: id
@@ -59,7 +59,7 @@ exports.deleteComment = async (id) => {
 }
 exports.checkContentComment = (content) => {
     console.log('content');
-    if(!content || content.length == 0) {
+    if (!content || content.length == 0) {
         let error = new Error("content is missing");
         error.status = 422;
         throw error
@@ -67,7 +67,7 @@ exports.checkContentComment = (content) => {
     return true
 }
 exports.updateComment = async (id, content) => {
-    if(this.checkContentComment(content) && this.checkId(id)) {
+    if (this.checkContentComment(content) && this.checkId(id)) {
         let result = await CommentModel.update({ content: content }, {
             where: {
                 id: id
