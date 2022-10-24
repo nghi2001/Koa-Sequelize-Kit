@@ -26,4 +26,5 @@ const db = {
     Comment: CommentModel
   }
 }
+
 module.exports = db;

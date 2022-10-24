@@ -15,8 +15,12 @@ app.use(koaBody())
 app.context.db = db
 
 app.on('error', (err, ctx) => {
-  console.error('server error', err)
-  ctx.body = err
+  // console.error('server error', mess)
+  ctx.status = err.status || 500
+  ctx.body = {
+    code: err.status || 500,
+    msg: err.message
+  }
 });
 
 app.use(routes.routes(), routes.allowedMethods());

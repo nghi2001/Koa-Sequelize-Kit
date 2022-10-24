@@ -1,51 +1,49 @@
+const TaskService = require('../services/task.service');
+
 exports.findById = async (ctx, next) => {
     try {
         let id = ctx.params.id;
-        if (!Number(id)) {
-            throw Error('id khong hop le')
+        let task = await TaskService.findOne(id)
+        if(!task) {
+            ctx.throw(404,'id not found')
         }
-        let tasks = await ctx.db.models.Task.findByPk(id);
-        console.log(tasks);
-        if (tasks) {
-            ctx.body = tasks
-        } else {
-            ctx.body = []
-        }
+        ctx.body = task
     } catch (error) {
-        ctx.app.emit('error', error, ctx)
+        ctx.app.emit("error", error, ctx)
     }
 }
 
 exports.findAll = async (ctx, next) => {
-    let tasks = await ctx.db.models.Task.findAndCountAll({ include: 'comments' });
-
-    ctx.body = tasks
+    try {
+        let tasks = await TaskService.getAllTask()
+        ctx.body = tasks
+    } catch (error) {
+        ctx.app.emit("error", error, ctx)
+    }
 }
 
 exports.create = async (ctx) => {
+    let { name, body } = ctx.request.body;
     try {
-        let { name, body } = ctx.request.body;
-        // console.log(name);
-        let newTask = await ctx.db.models.Task.create({ name: name, body: body })
-
-        ctx.body = newTask
-
+        let newTask = await TaskService.createTask({name,body})
+        if(newTask) {
+            ctx.status = 201
+            return ctx.body = newTask
+        }
+        ctx.throw(500, "can't create Task")
     } catch (error) {
         ctx.app.emit('error', error, ctx)
     }
 }
 
 exports.delete = async (ctx) => {
+    let id = ctx.params.id;
     try {
-        let id = ctx.params.id;
-        if (!Number(id)) {
-            throw Error('id khong hop le')
+        let result = await TaskService.deleteTask(id)
+        console.log(result);
+        if(result == 0) {
+            ctx.throw(404,'id not found')
         }
-        let result = await ctx.db.models.Task.destroy({
-            where: {
-                id: id
-            }
-        })
         ctx.body = result
     } catch (error) {
         ctx.app.emit('error', error, ctx)
@@ -54,19 +52,13 @@ exports.delete = async (ctx) => {
 
 exports.update = async (ctx) => {
     try {
-        let updateData = ctx.request.body
-        if (!ctx.request.body.name) {
-            updateData = { state: updateData.state, body: updateData.body }
+        let updateData = ctx.request.body;
+        let taskId = ctx.params.id;
+        let result = await TaskService.updateTask(updateData, taskId);
+        if(result == 0) {
+            ctx.throw(404,'id not found')
         }
-        if (!ctx.request.body.body) {
-            updateData = { state: updateData.state, name: updateData.name }
-        }
-        let result = await ctx.db.models.Task.update(updateData, {
-            where: {
-                id: ctx.params.id
-            }
-        })
-        ctx.body = result
+        ctx.body = result;
 
     } catch (error) {
         ctx.app.emit('error', error, ctx)

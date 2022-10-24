@@ -3,7 +3,14 @@ const route = new Route({
     prefix: "/task"
 });
 const TaskController = require('../controllers/taskController')
-
+// route.get("/test", (ctx) => {
+//     try {
+//         ctx.throw(401,'not fount')
+//     } catch (error) {
+//         // console.log(error.status);
+//         ctx.app.emit('error',error,  ctx)
+//     }
+// })
 route.get("/:id", TaskController.findById)
 
 route.get("/", TaskController.findAll)
