@@ -9,7 +9,7 @@ const routes = require('./routes');
 const db = require('./models/index')
 
 const PORT = process.env.PORT
-
+console.log(process.env.PASSWORD);
 app.use(cors())
 app.use(koaBody())
 app.context.db = db

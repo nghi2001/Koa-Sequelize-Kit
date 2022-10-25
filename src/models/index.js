@@ -1,7 +1,7 @@
 const env = process.env.NODE_ENV
-const dbConfig = require('../config/config.json')[env]
+const dbConfig = require('../config/config')
 const { Sequelize, DataTypes } = require('sequelize')
-
+console.log(process.env.USER);
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 
 const TaskModel = require('./task.models')(sequelize, DataTypes);

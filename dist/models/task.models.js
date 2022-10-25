@@ -1,7 +1,7 @@
 "use strict";
 
-module.exports = function (sequelize, Type) {
-  var Task = sequelize.define('Task', {
+module.exports = (sequelize, Type) => {
+  const Task = sequelize.define('Task', {
     name: {
       type: Type.STRING,
       allowNull: false

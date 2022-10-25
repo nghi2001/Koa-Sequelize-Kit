@@ -1,10 +1,10 @@
 "use strict";
 
-var Route = require('@koa/router');
-var route = new Route({
+const Route = require('@koa/router');
+const route = new Route({
   prefix: "/task"
 });
-var TaskController = require('../controllers/taskController');
+const TaskController = require('../controllers/taskController');
 // route.get("/test", (ctx) => {
 //     try {
 //         ctx.throw(401,'not fount')
@@ -17,7 +17,7 @@ route.get("/:id", TaskController.findById);
 route.get("/", TaskController.findAll);
 route.post('/', TaskController.create);
 route.put('/:id', TaskController.update);
-route.del('/:id', TaskController["delete"]);
+route.del('/:id', TaskController.delete);
 
 // route.post('/time', async (ctx) => {
 //     try {

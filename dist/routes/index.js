@@ -1,13 +1,11 @@
 "use strict";
 
-var Route = require('@koa/router');
-var routes = new Route();
-var fs = require('fs');
-var fileNames = fs.readdirSync(__dirname).filter(function (file) {
-  return !__filename.includes(file);
-});
-fileNames.forEach(function (file) {
-  var childRoute = require("./".concat(file));
+const Route = require('@koa/router');
+const routes = new Route();
+const fs = require('fs');
+let fileNames = fs.readdirSync(__dirname).filter(file => !__filename.includes(file));
+fileNames.forEach(file => {
+  let childRoute = require(`./${file}`);
   routes.use(childRoute.routes(), childRoute.allowedMethods());
 });
 module.exports = routes;

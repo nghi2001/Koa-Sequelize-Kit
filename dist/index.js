@@ -1,18 +1,19 @@
 "use strict";
 
-var KOA = require('koa');
-var app = new KOA();
-var dotenv = require('dotenv');
+const KOA = require('koa');
+const app = new KOA();
+const dotenv = require('dotenv');
 dotenv.config();
-var cors = require('@koa/cors');
-var koaBody = require('koa-body');
-var routes = require('./routes');
-var db = require('./models/index');
-var PORT = process.env.PORT;
+const cors = require('@koa/cors');
+const koaBody = require('koa-body');
+const routes = require('./routes');
+const db = require('./models/index');
+const PORT = process.env.PORT;
+console.log(process.env.PASSWORD);
 app.use(cors());
 app.use(koaBody());
 app.context.db = db;
-app.on('error', function (err, ctx) {
+app.on('error', (err, ctx) => {
   // console.error('server error', mess)
   ctx.status = err.status || 500;
   ctx.body = {
@@ -21,6 +22,4 @@ app.on('error', function (err, ctx) {
   };
 });
 app.use(routes.routes(), routes.allowedMethods());
-app.listen(PORT, function () {
-  return console.log("http://localhost:".concat(PORT));
-});
+app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

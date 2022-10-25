@@ -1,16 +1,18 @@
 "use strict";
 
-var env = process.env.NODE_ENV;
-var dbConfig = require('../config/config.json')[env];
-var _require = require('sequelize'),
-  Sequelize = _require.Sequelize,
-  DataTypes = _require.DataTypes;
-var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
-var TaskModel = require('./task.models')(sequelize, DataTypes);
-var CommentModel = require('./comment.model')(sequelize, DataTypes);
-sequelize.authenticate().then(function () {
+const env = process.env.NODE_ENV;
+const dbConfig = require('../config/config');
+const {
+  Sequelize,
+  DataTypes
+} = require('sequelize');
+console.log(process.env.USER);
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+const TaskModel = require('./task.models')(sequelize, DataTypes);
+const CommentModel = require('./comment.model')(sequelize, DataTypes);
+sequelize.authenticate().then(() => {
   console.log("database connected");
-})["catch"](function (err) {
+}).catch(err => {
   console.log(err);
 });
 TaskModel.hasMany(CommentModel, {
@@ -18,9 +20,9 @@ TaskModel.hasMany(CommentModel, {
   onDelete: "CASCADE"
 });
 CommentModel.belongsTo(TaskModel);
-var db = {
-  Sequelize: Sequelize,
-  sequelize: sequelize,
+const db = {
+  Sequelize,
+  sequelize,
   models: {
     Task: TaskModel,
     Comment: CommentModel
