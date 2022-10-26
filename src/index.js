@@ -1,4 +1,5 @@
-const KOA = require('koa');
+// const KOA = require('koa');
+import KOA from 'koa'
 const app = new KOA()
 const dotenv = require('dotenv');
 dotenv.config();

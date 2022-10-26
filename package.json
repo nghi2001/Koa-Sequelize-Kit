@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel ./src --watch -d dist",
-    "start": "nodemon ./dist/index.js",
-    "watch": "nodemon --exec \"npm run build &&  npm run start\" ",
+    "build": "babel ./src -d dist",
+    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "start": " npm run build && nodemon ./dist/index.js",
+    "watch": "babel ./src --watch -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
