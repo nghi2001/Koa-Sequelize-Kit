@@ -1,5 +1,6 @@
-let CommentService = require('../services/comment.service')
-exports.findAllComment = async (ctx, next) => {
+import * as CommentService from '../services/comment.service';
+
+export const findAllComment = async (ctx, next) => {
     try {
         let taskid = ctx.params.taskid;
         let comments = await CommentService.getCommentsByTaskId(taskid);
@@ -10,7 +11,7 @@ exports.findAllComment = async (ctx, next) => {
     }
 }
 
-exports.createComment = async (ctx) => {
+export const createComment = async (ctx) => {
     let { content, TaskId } = ctx.request.body;
     try {
         let comment = await CommentService.createComment({ content, TaskId })
@@ -20,7 +21,7 @@ exports.createComment = async (ctx) => {
         ctx.app.emit('error', error, ctx);
     }
 }
-exports.delete = async (ctx) => {
+export const destroy = async (ctx) => {
     try {
         let id = ctx.params.id;
         let result = await CommentService.deleteComment(id)
@@ -33,7 +34,7 @@ exports.delete = async (ctx) => {
     }
 }
 
-exports.update = async (ctx) => {
+export const update = async (ctx) => {
     try {
         let id = ctx.params.id;
         let { content } = ctx.request.body;

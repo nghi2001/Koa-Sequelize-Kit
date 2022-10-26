@@ -1,7 +1,7 @@
-const { models } = require('../models')
-const TaskModel = models.Task
+import db from '../models'
+const TaskModel = db.models.Task
 
-exports.checkId = (id) => {
+export const checkId = (id) => {
     if (!Number(id) || id < 0) {
         let error = new Error("id invalid");
         error.status = 400;
@@ -9,7 +9,7 @@ exports.checkId = (id) => {
     }
     return true
 }
-exports.findOne = async (id) => {
+export const findOne = async (id) => {
     this.checkId(id);
 
     let task = await TaskModel.findByPk(id);
@@ -17,19 +17,19 @@ exports.findOne = async (id) => {
     return task
 }
 
-exports.getAllTask = async () => {
+export const getAllTask = async () => {
     let tasks = await TaskModel.findAndCountAll({ include: 'comments' });
     return tasks
 }
 
-exports.checkTaskCreate = (Task) => {
+export const checkTaskCreate = (Task) => {
     if (!Task.name || !Task.body) {
         return false
     }
     return true
 }
 
-exports.createTask = async (Task) => {
+export const createTask = async (Task) => {
     if (this.checkTaskCreate(Task)) {
         let newTask = await TaskModel.create(Task)
         return newTask
@@ -40,7 +40,7 @@ exports.createTask = async (Task) => {
     }
 }
 
-exports.deleteTask = async (id) => {
+export const deleteTask = async (id) => {
     if (this.checkId(id)) {
         let result = await TaskModel.destroy({
             where: {
@@ -50,7 +50,7 @@ exports.deleteTask = async (id) => {
         return result
     }
 }
-exports.checkTaskEmpty = (task) => {
+export const checkTaskEmpty = (task) => {
     if (Object.keys(task).length === 0) {
         let error = new Error("data update is null");
         error.status = 422;
@@ -58,7 +58,7 @@ exports.checkTaskEmpty = (task) => {
     }
     return true;
 }
-exports.updateTask = async (Task, taskId) => {
+export const updateTask = async (Task, taskId) => {
     if (this.checkTaskEmpty(Task) && this.checkId(taskId)) {
         let result = await TaskModel.update(Task, {
             where: {

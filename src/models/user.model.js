@@ -1,20 +1,18 @@
 export default (sequelize, Type) => {
-    const Task = sequelize.define('Task', {
-        name: {
+    const User = sequelize.define('User', {
+        username: {
             type: Type.STRING,
             allowNull: false
         },
-        body: {
+        password: {
             type: Type.STRING,
             allowNull: false
-        }
-        ,
-        state: {
+        },
+        refreshToken: {
             type: Type.STRING,
-            allowNull: false,
-            defaultValue: "TODO"
+            allowNull: true
         }
     })
 
-    return Task
+    return User
 }

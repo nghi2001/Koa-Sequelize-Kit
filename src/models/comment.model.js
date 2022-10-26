@@ -1,4 +1,4 @@
-module.exports = (sequelize, Type) => {
+export default (sequelize, Type) => {
     const Comment = sequelize.define('Comment', {
         content: {
             type: Type.STRING

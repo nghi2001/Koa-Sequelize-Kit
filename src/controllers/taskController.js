@@ -1,6 +1,6 @@
-const TaskService = require('../services/task.service');
+import * as TaskService from '../services/task.service';
 
-exports.findById = async (ctx, next) => {
+export const findById = async (ctx, next) => {
     try {
         let id = ctx.params.id;
         let task = await TaskService.findOne(id)
@@ -13,7 +13,7 @@ exports.findById = async (ctx, next) => {
     }
 }
 
-exports.findAll = async (ctx, next) => {
+export const findAll = async (ctx, next) => {
     try {
         let tasks = await TaskService.getAllTask()
         ctx.body = tasks
@@ -22,7 +22,7 @@ exports.findAll = async (ctx, next) => {
     }
 }
 
-exports.create = async (ctx) => {
+export const create = async (ctx) => {
     let { name, body } = ctx.request.body;
     try {
         let newTask = await TaskService.createTask({ name, body })
@@ -36,7 +36,7 @@ exports.create = async (ctx) => {
     }
 }
 
-exports.delete = async (ctx) => {
+export const destroy = async (ctx) => {
     let id = ctx.params.id;
     try {
         let result = await TaskService.deleteTask(id)
@@ -50,7 +50,7 @@ exports.delete = async (ctx) => {
     }
 }
 
-exports.update = async (ctx) => {
+export const update = async (ctx) => {
     try {
         let updateData = ctx.request.body;
         let taskId = ctx.params.id;

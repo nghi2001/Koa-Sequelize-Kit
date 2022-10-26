@@ -1,8 +1,8 @@
-const { models } = require('../models')
-const CommentModel = models.Comment
-const TaskService = require('./task.service');
+import db from '../models';
+import * as TaskService from './task.service';
+const CommentModel = db.models.Comment
 
-exports.checkId = (id) => {
+export const checkId = (id) => {
     if (!Number(id) || id < 0) {
         let error = new Error("id invalid");
         error.status = 400;
@@ -10,7 +10,7 @@ exports.checkId = (id) => {
     }
     return true
 }
-exports.checkTaskExist = async (taskId) => {
+export const checkTaskExist = async (taskId) => {
     let task = await TaskService.findOne(taskId);
     if (!task) {
         let error = new Error("task not found");
@@ -20,7 +20,7 @@ exports.checkTaskExist = async (taskId) => {
     console.log(!task);
     return true
 }
-exports.getCommentsByTaskId = async (id) => {
+export const getCommentsByTaskId = async (id) => {
     if (this.checkId(id)) {
         let comments = await CommentModel.findAndCountAll({
             where: {
@@ -30,7 +30,7 @@ exports.getCommentsByTaskId = async (id) => {
         return comments
     }
 }
-exports.checkCreateComment = (comment) => {
+export const checkCreateComment = (comment) => {
     let checkProp = comment.content && comment.TaskId;
     if (!checkProp) {
         let error = new Error("content or Taskid is missing");
@@ -39,7 +39,7 @@ exports.checkCreateComment = (comment) => {
     }
     return true
 }
-exports.createComment = async (comment) => {
+export const createComment = async (comment) => {
     if (this.checkCreateComment(comment)) {
         await this.checkTaskExist(comment.TaskId)
         let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId });
@@ -47,7 +47,7 @@ exports.createComment = async (comment) => {
     }
 }
 
-exports.deleteComment = async (id) => {
+export const deleteComment = async (id) => {
     if (this.checkId(id)) {
         let result = await CommentModel.destroy({
             where: {
@@ -57,7 +57,7 @@ exports.deleteComment = async (id) => {
         return result
     }
 }
-exports.checkContentComment = (content) => {
+export const checkContentComment = (content) => {
     console.log('content');
     if (!content || content.length == 0) {
         let error = new Error("content is missing");
@@ -66,7 +66,7 @@ exports.checkContentComment = (content) => {
     }
     return true
 }
-exports.updateComment = async (id, content) => {
+export const updateComment = async (id, content) => {
     if (this.checkContentComment(content) && this.checkId(id)) {
         let result = await CommentModel.update({ content: content }, {
             where: {
