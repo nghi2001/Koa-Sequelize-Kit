@@ -19,7 +19,7 @@ app.use(koaBody())
 // app.context.db = db
 
 app.on('error', (err, ctx) => {
-  console.log(err);
+  // console.log(err);
   ctx.status = err.status || 500
   ctx.body = {
     code: err.status || 500,

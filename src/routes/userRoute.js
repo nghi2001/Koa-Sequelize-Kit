@@ -4,10 +4,10 @@ const route = new Route({
 });
 const UserController = require('../controllers/userController');
 
-// route.get("/:taskid", CommentController.findAllComment);
-
+route.get("/:id", UserController.findOne);
+route.get("/", UserController.findAll)
 route.post("/", UserController.create);
-// route.delete("/:id", CommentController.delete);
-// route.put("/:id", CommentController.update);
+route.delete("/:id", UserController.destroy);
+route.put("/", UserController.update);
 
 module.exports = route;

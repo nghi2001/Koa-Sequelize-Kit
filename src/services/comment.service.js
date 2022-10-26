@@ -21,7 +21,7 @@ export const checkTaskExist = async (taskId) => {
     return true
 }
 export const getCommentsByTaskId = async (id) => {
-    if (this.checkId(id)) {
+    if (checkId(id)) {
         let comments = await CommentModel.findAndCountAll({
             where: {
                 TaskId: id
@@ -40,15 +40,15 @@ export const checkCreateComment = (comment) => {
     return true
 }
 export const createComment = async (comment) => {
-    if (this.checkCreateComment(comment)) {
-        await this.checkTaskExist(comment.TaskId)
+    if (checkCreateComment(comment)) {
+        await checkTaskExist(comment.TaskId)
         let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId });
         return newComment
     }
 }
 
 export const deleteComment = async (id) => {
-    if (this.checkId(id)) {
+    if (checkId(id)) {
         let result = await CommentModel.destroy({
             where: {
                 id: id
@@ -67,7 +67,7 @@ export const checkContentComment = (content) => {
     return true
 }
 export const updateComment = async (id, content) => {
-    if (this.checkContentComment(content) && this.checkId(id)) {
+    if (checkContentComment(content) && checkId(id)) {
         let result = await CommentModel.update({ content: content }, {
             where: {
                 id: id

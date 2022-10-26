@@ -10,7 +10,7 @@ export const checkId = (id) => {
     return true
 }
 export const findOne = async (id) => {
-    this.checkId(id);
+    checkId(id);
 
     let task = await TaskModel.findByPk(id);
 
@@ -23,14 +23,14 @@ export const getAllTask = async () => {
 }
 
 export const checkTaskCreate = (Task) => {
-    if (!Task.name || !Task.body) {
+    if (!Task.name || !Task.body || !Task.UserId) {
         return false
     }
     return true
 }
 
 export const createTask = async (Task) => {
-    if (this.checkTaskCreate(Task)) {
+    if (checkTaskCreate(Task)) {
         let newTask = await TaskModel.create(Task)
         return newTask
     } else {
@@ -41,7 +41,7 @@ export const createTask = async (Task) => {
 }
 
 export const deleteTask = async (id) => {
-    if (this.checkId(id)) {
+    if (checkId(id)) {
         let result = await TaskModel.destroy({
             where: {
                 id: id
@@ -59,7 +59,7 @@ export const checkTaskEmpty = (task) => {
     return true;
 }
 export const updateTask = async (Task, taskId) => {
-    if (this.checkTaskEmpty(Task) && this.checkId(taskId)) {
+    if (checkTaskEmpty(Task) && checkId(taskId)) {
         let result = await TaskModel.update(Task, {
             where: {
                 id: taskId

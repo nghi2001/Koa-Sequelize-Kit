@@ -23,9 +23,9 @@ export const findAll = async (ctx, next) => {
 }
 
 export const create = async (ctx) => {
-    let { name, body } = ctx.request.body;
+    let { name, body, UserId } = ctx.request.body;
     try {
-        let newTask = await TaskService.createTask({ name, body })
+        let newTask = await TaskService.createTask({ name, body, UserId })
         if (newTask) {
             ctx.status = 201
             return ctx.body = newTask
