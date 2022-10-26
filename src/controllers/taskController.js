@@ -55,6 +55,7 @@ export const update = async (ctx) => {
         let updateData = ctx.request.body;
         let taskId = ctx.params.id;
         let result = await TaskService.updateTask(updateData, taskId);
+        console.log(result == 0);
         if (result == 0) {
             ctx.throw(404, 'id not found')
         }

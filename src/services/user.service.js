@@ -24,7 +24,7 @@ export const createUser = async (username, password) => {
 }
 
 export const findAll = async () => {
-    let tasks = await UserModel.findAndCountAll({include:'tasks'});
+    let tasks = await UserModel.findAndCountAll({ include: 'tasks' });
     return tasks
 }
 export const checkId = (id) => {
@@ -52,6 +52,10 @@ export const findById = async (id) => {
                 id: id
             }
         })
+        if (!user) {
+            let err = new Error("user not fount");
+            err.status = 404; throw err;
+        }
         return user
     }
 }
@@ -80,16 +84,24 @@ export const updatePassWord = async (username, password, newPass) => {
         if (compare) {
             let salt = await bcrypt.genSalt();
             let hashpass = await bcrypt.hash(newPass, salt);
-            let updateUser =  await UserModel.update({password: hashpass}, {
+            let updateUser = await UserModel.update({ password: hashpass }, {
                 where: {
                     username: username
                 }
             })
-            return updateUser
+            return updateUser;
         }
     } else {
         let error = new Error("username not exist");
         error.status = 404;
         throw error
     }
+}
+export const updateRefreshToken = async (userId, refreshToken) => {
+    let updateUser = await UserModel.update({ refreshToken }, {
+        where: {
+            id: userId
+        }
+    });
+    return updateUser;
 }

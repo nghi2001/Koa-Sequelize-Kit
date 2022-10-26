@@ -16,7 +16,7 @@ export const authenUser = async (username, password) => {
 export const generateAccessToken = async (payload) => {
     let secret = process.env.ACCESSTOKEN_SECRET;
     let accessToken = await jwt.sign(payload, secret, {
-        expiresIn: 60 * 60
+        expiresIn: '30m'
     })
     return accessToken
 }
@@ -26,6 +26,20 @@ export const generateRefreshToken = async (payload) => {
     let accessToken = await jwt.sign(payload, secret, {
         expiresIn: '30d'
     })
-    return accessToken   
+    return accessToken
 }
 
+export const getNewToken = async (userId, refreshToken) => {
+    console.log(userId, refreshToken);
+    let user = await UserService.findById(userId);
+    if (user.refreshToken != refreshToken) {
+        let err = new Error("Forbiden"); err.status = 403; throw err;
+    } else {
+        let [newAccessToken, newRefreshToken] = await Promise.all([
+            generateAccessToken({ id: userId, username: user.username }),
+            generateRefreshToken({ id: userId, username: user.username })
+        ]);
+        await UserService.updateRefreshToken(userId, newRefreshToken)
+        return { accessToken: newAccessToken, refreshToken: newRefreshToken }
+    }
+}

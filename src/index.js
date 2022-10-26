@@ -1,17 +1,14 @@
 // const KOA = require('koa');
-import KOA from 'koa'
+import KOA from 'koa';
+import morgan from 'morgan';
 const app = new KOA()
-// const dotenv = require('dotenv');
-// dotenv.config();
-// const cors = require('@koa/cors');
-// const koaBody = require('koa-body');
-
 const routes = require('./routes');
 import * as dotenv from 'dotenv';
 dotenv.config();
 import cors from '@koa/cors'
 import koaBody from 'koa-body';
 
+morgan('tiny')
 const PORT = process.env.PORT
 console.log(process.env.PASSWORD);
 app.use(cors())
