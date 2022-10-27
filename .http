@@ -58,3 +58,5 @@ Content-Type: application/json
     "username": "nghi",
     "password": "123445"
 }
+###
+GET http://localhost:3000/user/export

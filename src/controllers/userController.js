@@ -1,5 +1,6 @@
 import * as UserService from '../services/user.service';
-
+import XlsxPopulate from 'xlsx-populate';
+import fs from 'fs';
 
 export const create = async (ctx) => {
     try {
@@ -53,5 +54,31 @@ export const update = async (ctx) => {
 }
 
 export const exportExcel = async (ctx) => {
-    
+    let id = ctx.request.params.userId;
+    let column = [
+        'id','name', 'body', 'state', 'createAt', 'updateAt', 'UserId'
+    ]
+    await XlsxPopulate.fromBlankAsync()
+        .then(async (workbook) => {
+            column.forEach((col, index) =>{
+                workbook.sheet("Sheet1").cell(1,index+1).value(col);
+                workbook.sheet("Sheet1").column(index+1).width(20);
+            })
+            let user = await UserService.getListTask(id);
+            let rowInd = 2;
+            user.tasks.forEach((task) => {
+                let colInd = 1;
+                let taskValues = Object.values(task.dataValues);
+                taskValues.forEach((val) => {
+                    workbook.sheet("Sheet1").cell(rowInd,colInd).value(val);
+                    colInd++
+                })
+                rowInd++
+            })
+            return workbook.toFileAsync('temp.xlsx')
+        })
+    let stream = fs.createReadStream('temp.xlsx')
+    ctx.response.set("content-type", "application/vnd.ms-excel")
+    ctx.response.set('Content-Disposition', 'attachment; filename="temp.xlsx"')
+    ctx.body = stream
 }

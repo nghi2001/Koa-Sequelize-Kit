@@ -60,6 +60,18 @@ export const findById = async (id) => {
     }
 }
 
+export const getListTask = async (id) => {
+    if( checkId(id) ) {
+        let user = await UserModel.findOne({
+            where: {
+                id: id
+            },
+            include: "tasks"
+        });
+        return user
+    }
+}
+
 export const findbyUserName = async (username) => {
     let user = await UserModel.findOne({
         where: {
