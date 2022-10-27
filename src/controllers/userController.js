@@ -60,7 +60,7 @@ export const exportExcel = async (ctx) => {
     await XlsxPopulate.fromBlankAsync()
         .then(async (workbook) => {
             column.forEach((col, index) =>{
-                workbook.sheet("Sheet1").cell(1,index+1).value(col);
+                workbook.sheet("Sheet1").cell(1,index+1).value(col).style('bold', true);
                 workbook.sheet("Sheet1").column(index+1).width(20);
             })
             let user = await UserService.getListTask(ctx.user.id);
