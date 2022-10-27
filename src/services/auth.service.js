@@ -17,7 +17,7 @@ export const authenUser = async (username, password) => {
 export const generateAccessToken = async (payload) => {
     let secret = process.env.ACCESSTOKEN_SECRET
     let accessToken = await jwt.sign(payload, secret, {
-        expiresIn: 60*60
+        expiresIn: 60 * 60
     })
     return accessToken
 }
@@ -42,5 +42,13 @@ export const getNewToken = async (userId, refreshToken) => {
         ])
         await UserService.updateRefreshToken(userId, newRefreshToken)
         return { accessToken: newAccessToken, refreshToken: newRefreshToken }
+    }
+}
+
+export const logout = async (idUser) => {
+    let checkUserExist = await UserService.findById(idUser);
+    if (checkUserExist) {
+        let result = await UserService.updateRefreshToken(idUser,null)
+        return result
     }
 }

@@ -21,7 +21,13 @@ export const login = async (ctx) => {
 }
 
 export const logout = async (ctx) => {
-
+    try {
+        let idUser = ctx.user.id
+        let result = await AuthService.logout(idUser)
+        ctx.body = result
+    } catch (error) {
+        ctx.app.emit("error", error, ctx)
+    }
 }
 const verifyToken = (token, secret) => {
     try {

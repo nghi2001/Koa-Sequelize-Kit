@@ -11,5 +11,6 @@ route.get("/test", verifyTokenMiddleware, async (ctx) => {
     ctx.body = 'k'
 })
 route.post("/login", loginMiddleware, AuthController.login)
+route.post("/logout",verifyTokenMiddleware, AuthController.logout)
 route.post("/refreshToken", AuthController.getNewToken)
 module.exports = route
