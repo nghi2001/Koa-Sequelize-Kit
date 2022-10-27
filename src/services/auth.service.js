@@ -16,7 +16,7 @@ export const authenUser = async (username, password) => {
 export const generateAccessToken = async (payload) => {
     let secret = process.env.ACCESSTOKEN_SECRET;
     let accessToken = await jwt.sign(payload, secret, {
-        expiresIn: '30m'
+        expiresIn: 60*60
     })
     return accessToken
 }

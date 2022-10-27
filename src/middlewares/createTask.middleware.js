@@ -3,8 +3,7 @@ export default async (ctx, next) => {
     try {
         let rule = {
             name: 'string',
-            body: 'string',
-            UserId: 'int'
+            body: 'string'
         }
         validate(ctx.request.body, rule)
         await next()

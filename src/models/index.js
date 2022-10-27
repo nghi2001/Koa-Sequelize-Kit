@@ -20,9 +20,11 @@ sequelize.authenticate()
     console.log(err);
   })
 UserModel.hasMany(TaskModel, {as: 'tasks', onDelete: "CASCADE"});
+UserModel.hasMany(CommentModel, {as: 'comments', onDelete: "CASCADE"});
 TaskModel.belongsTo(UserModel)
 TaskModel.hasMany(CommentModel, { as: 'comments', onDelete: "CASCADE" });
 CommentModel.belongsTo(TaskModel);
+CommentModel.belongsTo(UserModel)
 
 const db = {
   Sequelize,

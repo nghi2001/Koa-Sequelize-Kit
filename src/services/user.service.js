@@ -24,7 +24,7 @@ export const createUser = async (username, password) => {
 }
 
 export const findAll = async () => {
-    let tasks = await UserModel.findAndCountAll({ include: 'tasks' });
+    let tasks = await UserModel.findAndCountAll({ include: ['tasks','comments'] });
     return tasks
 }
 export const checkId = (id) => {

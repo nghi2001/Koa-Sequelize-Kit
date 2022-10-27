@@ -51,3 +51,7 @@ export const update = async (ctx) => {
         ctx.app.emit("error", error, ctx);
     }
 }
+
+export const exportExcel = async (ctx) => {
+    
+}

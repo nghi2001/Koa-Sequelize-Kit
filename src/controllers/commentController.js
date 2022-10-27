@@ -14,7 +14,8 @@ export const findAllComment = async (ctx, next) => {
 export const createComment = async (ctx) => {
     let { content, TaskId } = ctx.request.body;
     try {
-        let comment = await CommentService.createComment({ content, TaskId })
+        console.log(ctx.user.id);
+        let comment = await CommentService.createComment({ content, TaskId , UserId: ctx.user.id})
         ctx.status = 201
         ctx.body = comment
     } catch (error) {
