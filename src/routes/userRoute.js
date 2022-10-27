@@ -5,7 +5,7 @@ const route = new Route({
 });
 const UserController = require('../controllers/userController');
 
-route.get("/export/:userId", UserController.exportExcel);
+route.get("/export/:userId",verifyTokenMiddleware, UserController.exportExcel);
 route.get("/:id", UserController.findOne);
 route.get("/", UserController.findAll);
 route.post("/", UserController.create);
