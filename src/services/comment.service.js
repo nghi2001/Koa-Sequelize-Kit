@@ -1,23 +1,20 @@
-import db from '../models';
-import * as TaskService from './task.service';
+import db from '../models'
+import * as TaskService from './task.service'
+import ThrowError from '../utils/Error'
 const CommentModel = db.models.Comment
 
 export const checkId = (id) => {
     if (!Number(id) || id < 0) {
-        let error = new Error("id invalid");
-        error.status = 400;
-        throw error
+        ThrowError(400, "id invalid")
     }
     return true
 }
 export const checkTaskExist = async (taskId) => {
-    let task = await TaskService.findOne(taskId);
+    let task = await TaskService.findOne(taskId)
     if (!task) {
-        let error = new Error("task not found");
-        error.status = 200;
-        throw error
+        ThrowError(404, "Task not found")
     }
-    console.log(!task);
+    console.log(!task)
     return true
 }
 export const getCommentsByTaskId = async (id) => {
@@ -26,23 +23,21 @@ export const getCommentsByTaskId = async (id) => {
             where: {
                 TaskId: id
             }
-        });
+        })
         return comments
     }
 }
 export const checkCreateComment = (comment) => {
-    let checkProp = comment.content && comment.TaskId;
+    let checkProp = comment.content && comment.TaskId
     if (!checkProp) {
-        let error = new Error("content or Taskid is missing");
-        error.status = 422;
-        throw error
+        ThrowError(422, "content or Taskid is missing")
     }
     return true
 }
 export const createComment = async (comment) => {
     if (checkCreateComment(comment)) {
         await checkTaskExist(comment.TaskId)
-        let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId , UserId: comment.UserId});
+        let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId , UserId: comment.UserId})
         return newComment
     }
 }
@@ -53,16 +48,14 @@ export const deleteComment = async (id) => {
             where: {
                 id: id
             }
-        });
+        })
         return result
     }
 }
 export const checkContentComment = (content) => {
-    console.log('content');
+    console.log('content')
     if (!content || content.length == 0) {
-        let error = new Error("content is missing");
-        error.status = 422;
-        throw error
+        ThrowError(422, "content is missing")
     }
     return true
 }
@@ -72,7 +65,7 @@ export const updateComment = async (id, content) => {
             where: {
                 id: id
             }
-        });
+        })
         return result
     }
 }
