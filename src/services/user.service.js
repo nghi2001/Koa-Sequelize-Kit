@@ -1,3 +1,4 @@
+import fs from 'fs'
 import db from '../models'
 import bcrypt from 'bcrypt'
 import ThrowError from '../utils/Error'
@@ -10,12 +11,12 @@ export const checkUser = async (username) => {
     }
     return true
 }
-export const createUser = async (username, password) => {
+export const createUser = async (username, password, avatar) => {
     let check = await checkUser(username)
     if (check) {
         let salt = await bcrypt.genSalt()
         let hashpass = await bcrypt.hash(password, salt)
-        let user = await UserModel.create({ username, password: hashpass })
+        let user = await UserModel.create({ username, password: hashpass, avatar: avatar })
 
         return user
     }
@@ -108,4 +109,25 @@ export const updateRefreshToken = async (userId, refreshToken) => {
         }
     })
     return updateUser
+}
+
+export const updateAvatar = async (idUser, avatar) => {
+    try {
+        let result = await UserModel.update({avatar: avatar}, {
+            where: {
+                id: idUser
+            }
+        })
+        return result
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
+
+export const deleteAvatar = async (avatar) => {
+    fs.unlink("./public/uploads/"+avatar, (err) => {
+        // if(err) ThrowError(402,'loi')
+        console.log(err);
+    })
 }

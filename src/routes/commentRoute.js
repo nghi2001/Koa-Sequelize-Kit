@@ -8,8 +8,8 @@ const CommentController = require('../controllers/commentController')
 
 route.get("/:taskid", CommentController.findAllComment)
 
-route.post("/",verifyTokenMiddleware,createCommentMiddleware , CommentController.createComment)
-route.delete("/:id",verifyTokenMiddleware, CommentController.destroy)
-route.put("/:id", verifyTokenMiddleware,CommentController.update)
+route.post("/", verifyTokenMiddleware, createCommentMiddleware, CommentController.createComment)
+route.delete("/:id", verifyTokenMiddleware, CommentController.destroy)
+route.put("/:id", verifyTokenMiddleware, CommentController.update)
 
 module.exports = route

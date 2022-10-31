@@ -11,5 +11,5 @@ route.get("/", UserController.findAll)
 route.post("/", UserController.create)
 route.delete("/:id", UserController.destroy)
 route.put("/", UserController.update)
-
+route.put("/avatar/:id", UserController.updateAvatar)
 module.exports = route

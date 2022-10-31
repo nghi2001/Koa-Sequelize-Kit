@@ -8,6 +8,11 @@ export default (sequelize, Type) => {
             type: Type.STRING,
             allowNull: false
         },
+        avatar: {
+            type: Type.STRING,
+            allowNull: true
+        }
+        ,
         refreshToken: {
             type: Type.STRING,
             allowNull: true

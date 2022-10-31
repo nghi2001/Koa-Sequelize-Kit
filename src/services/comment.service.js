@@ -37,7 +37,10 @@ export const checkCreateComment = (comment) => {
 export const createComment = async (comment) => {
     if (checkCreateComment(comment)) {
         await checkTaskExist(comment.TaskId)
-        let newComment = await CommentModel.create({ content: comment.content, TaskId: comment.TaskId , UserId: comment.UserId})
+        let newComment = await CommentModel.create({ 
+            content: comment.content, TaskId: comment.TaskId ,
+            UserId: comment.UserId,
+            file_attach: comment.file_attach})
         return newComment
     }
 }
