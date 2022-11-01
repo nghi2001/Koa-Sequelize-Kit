@@ -1,10 +1,16 @@
 export default (sequelize, Type) => {
     const Comment = sequelize.define('Comment', {
         content: {
-            type: Type.STRING
+            type: Type.STRING,
+            allowNull: false
         },
-        file_attach: {
-            type: Type.ARRAY(Type.STRING)
+        UserId: {
+            type: Type.INTEGER,
+            allowNull: false
+        },
+        TaskId: {
+            type: Type.INTEGER,
+            allowNull: false
         }
     })
 

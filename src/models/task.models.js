@@ -13,6 +13,10 @@ export default (sequelize, Type) => {
             type: Type.STRING,
             allowNull: false,
             defaultValue: "TODO"
+        },
+        UserId: {
+            type: Type.INTEGER,
+            allowNull: false
         }
     })
 

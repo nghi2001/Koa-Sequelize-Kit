@@ -7,10 +7,6 @@ export default (sequelize, Type) => {
         password: {
             type: Type.STRING,
             allowNull: false
-        },
-        avatar: {
-            type: Type.STRING,
-            allowNull: true
         }
         ,
         refreshToken: {
