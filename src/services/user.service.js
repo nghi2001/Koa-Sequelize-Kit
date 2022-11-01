@@ -120,8 +120,7 @@ export const updateAvatar = async (idUser, avatar) => {
         })
         return result
     } catch (error) {
-        console.log(error);
-        throw error
+        console.log(error)
     }
 }
 

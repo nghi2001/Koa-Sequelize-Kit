@@ -24,6 +24,7 @@ route.post("/", (ctx) => {
         fs.unlink("./public/uploads/"+fileName, (err) => {
             console.log(err);
         })
+        ctx.body = 'success'
     } catch (error) {
         ctx.app.emit("error", error, ctx)
     }
