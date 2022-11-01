@@ -14,7 +14,6 @@ export const checkTaskExist = async (taskId) => {
     if (!task) {
         ThrowError(404, "Task not found")
     }
-    console.log(!task)
     return true
 }
 export const getCommentsByTaskId = async (id) => {
@@ -56,7 +55,6 @@ export const deleteComment = async (id) => {
     }
 }
 export const checkContentComment = (content) => {
-    console.log('content')
     if (!content || content.length == 0) {
         ThrowError(422, "content is missing")
     }

@@ -1,12 +1,12 @@
 import createTaskMiddleware from '../middlewares/createTask.middleware'
 import updateTaskMiddleware from '../middlewares/updateTask.middleware'
 import verifyToken from '../middlewares/verifyToken.middleware'
-const Route = require('@koa/router')
+import Route from '@koa/router'
+import * as TaskController from '../controllers/taskController'
+
 const route = new Route({
     prefix: "/task"
 })
-const TaskController = require('../controllers/taskController')
-
 route.get("/:id", TaskController.findById)
 
 route.get("/", TaskController.findAll)

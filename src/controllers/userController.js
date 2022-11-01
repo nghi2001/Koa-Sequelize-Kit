@@ -61,39 +61,37 @@ export const exportExcel = async (ctx) => {
     let column = [
         'id', 'name', 'body', 'state', 'createAt', 'updateAt', 'UserId'
     ]
-    await XlsxPopulate.fromBlankAsync()
+    let workbook = await XlsxPopulate.fromBlankAsync()
         .then(async (workbook) => {
             column.forEach((col, index) => {
                 workbook.sheet("Sheet1").cell(1, index + 1).value(col).style('bold', true)
                 workbook.sheet("Sheet1").column(index + 1).width(20)
             })
-            let user = await UserService.getListTask(ctx.user.id)
+            let user = await UserService.getListTask(3)
             let rowInd = 2
             user.tasks.forEach((task) => {
                 let colInd = 1
                 let taskValues = Object.values(task.dataValues)
                 taskValues.forEach((val) => {
-                    workbook.sheet("Sheet1").cell(rowInd, colInd).value(val)
+                    workbook.sheet("Sheet1").cell(rowInd, colInd).value(val.toString())
                     colInd++
                 })
                 rowInd++
             })
-            return workbook.toFileAsync('temp.xlsx')
+            return await workbook.outputAsync()
         })
-    let stream = fs.createReadStream(`temp.xlsx`)
+    let filename = `${v1()}.xlsx`;
     ctx.response.set("content-type", "application/vnd.ms-excel")
-    ctx.response.set('Content-Disposition', 'attachment filename="' + v1() + '.xlsx"')
-    ctx.body = stream
+    ctx.response.set('Content-Disposition', 'attachment; filename='+filename)
+    ctx.body = workbook
 }
 
 export const updateAvatar = async (ctx) => {
     let { avatar } = ctx.request.body
     let idUser = ctx.params.id
     try {
-        console.log(avatar, idUser)
         let user = await UserService.findById(idUser)
         let result = await UserService.updateAvatar(idUser, avatar)
-        console.log(user.avatar, avatar);
         if (result == 1 && user.avatar !== avatar) {
             UserService.deleteAvatar(user.avatar)
         }

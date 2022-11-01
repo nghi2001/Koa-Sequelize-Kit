@@ -1,11 +1,12 @@
 import verifyTokenMiddleware from '../middlewares/verifyToken.middleware'
-const Route = require('@koa/router')
+import Route from '@koa/router'
+import * as UserController from '../controllers/userController'
+
 const route = new Route({
     prefix: "/user"
 })
-const UserController = require('../controllers/userController')
 
-route.get("/export/:userId",verifyTokenMiddleware, UserController.exportExcel)
+route.get("/export/:userId", UserController.exportExcel)
 route.get("/:id", UserController.findOne)
 route.get("/", UserController.findAll)
 route.post("/", UserController.create)

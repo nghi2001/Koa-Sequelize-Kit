@@ -7,11 +7,9 @@ export const login = async (ctx) => {
         let { username, password } = ctx.request.body
         let [checkAuthen, user] = await AuthService.authenUser(username, password)
         if (checkAuthen) {
-            console.log(user.id)
             let accessToken = await AuthService.generateAccessToken({ id: user.id, username: user.username })
             let refreshToken = await AuthService.generateRefreshToken({ id: user.id, username: user.username })
             let updateRefreshToken = await UserService.updateRefreshToken(user.id, refreshToken)
-            // console.log(updateRefreshToken)
             ctx.status = 201
             ctx.body = { accessToken, refreshToken }
         }
@@ -42,11 +40,9 @@ export const getNewToken = async (ctx) => {
         let refreshToken = ctx.request.body.refreshToken
         if (!refreshToken) ctx.throw(401)
         let resultVerifyToken = verifyToken(refreshToken, process.env.REFRESHTOKEN_SECRET)
-        // console.log(resultVerifyToken)
         if (resultVerifyToken) {
             let userid = resultVerifyToken.id
             let newToken = await AuthService.getNewToken(userid, refreshToken)
-            console.log(newToken)
             ctx.body = newToken
         }
     } catch (error) {

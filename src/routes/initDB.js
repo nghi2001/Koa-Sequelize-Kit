@@ -1,4 +1,4 @@
-const Route = require('@koa/router');
+import Route from '@koa/router'
 const route = new Route({
     prefix: "/db"
 });

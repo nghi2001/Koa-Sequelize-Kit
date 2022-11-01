@@ -31,7 +31,6 @@ export const generateRefreshToken = async (payload) => {
 }
 
 export const getNewToken = async (userId, refreshToken) => {
-    console.log(userId, refreshToken)
     let user = await UserService.findById(userId)
     if (user.refreshToken != refreshToken) {
         ThrowError(403, "Forbiden")

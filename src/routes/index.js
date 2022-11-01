@@ -1,6 +1,6 @@
-const Route = require('@koa/router')
+import Route from '@koa/router'
+import fs from 'fs'
 const routes = new Route()
-const fs = require('fs')
 
 let fileNames = fs.readdirSync(__dirname)
     .filter(file => !__filename.includes(file))

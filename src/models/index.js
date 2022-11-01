@@ -1,13 +1,14 @@
-const env = process.env.NODE_ENV
-// const dbConfig = require('../config/config')
-import dbConfig from '../config/config'
+import env from '../config/config'
 import { Sequelize, DataTypes } from 'sequelize'
-console.log(process.env.USER)
-const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig)
-
 import taskModel from './task.models'
 import commentModel from './comment.model'
 import userModel from './user.model'
+
+const sequelize = new Sequelize(env('DB'), env('USER'), env('PASSWORD'), {
+    dialect: env('DIALECT'),
+    host: env('HOST')
+})
+
 const UserModel = userModel(sequelize, DataTypes)
 const TaskModel = taskModel(sequelize, DataTypes)
 const CommentModel = commentModel(sequelize, DataTypes)

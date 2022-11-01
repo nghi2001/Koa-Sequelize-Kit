@@ -1,8 +1,7 @@
 import multer from '@koa/multer'
 import path from 'path'
 import fs from 'fs'
-import verifyTokenMiddleware from '../middlewares/verifyToken.middleware'
-const Route = require('@koa/router')
+import Route from '@koa/router'
 const route = new Route({
     prefix: "/file"
 })
@@ -44,7 +43,6 @@ route.post("/multi",
         storage: storage
     }).array("files"),
     (ctx) => {
-        console.log(ctx.request.files)
         ctx.status = 201
         ctx.body = ctx.request.files
     }

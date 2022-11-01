@@ -1,10 +1,11 @@
-const Route = require('@koa/router')
+import Route from '@koa/router'
+import createCommentMiddleware from '../middlewares/createComment.middleware'
+import verifyTokenMiddleware from '../middlewares/verifyToken.middleware'
+import * as CommentController from '../controllers/commentController'
+
 const route = new Route({
     prefix: "/comment"
 })
-import createCommentMiddleware from '../middlewares/createComment.middleware'
-import verifyTokenMiddleware from '../middlewares/verifyToken.middleware'
-const CommentController = require('../controllers/commentController')
 
 route.get("/:taskid", CommentController.findAllComment)
 

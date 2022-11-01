@@ -112,21 +112,16 @@ export const updateRefreshToken = async (userId, refreshToken) => {
 }
 
 export const updateAvatar = async (idUser, avatar) => {
-    try {
-        let result = await UserModel.update({avatar: avatar}, {
-            where: {
-                id: idUser
-            }
-        })
-        return result
-    } catch (error) {
-        console.log(error)
-    }
+    let result = await UserModel.update({avatar: avatar}, {
+        where: {
+            id: idUser
+        }
+    })
+    return result
 }
 
 export const deleteAvatar = async (avatar) => {
     fs.unlink("./public/uploads/"+avatar, (err) => {
-        // if(err) ThrowError(402,'loi')
-        console.log(err);
+        if(err) ThrowError(409,"can not delete file")
     })
 }

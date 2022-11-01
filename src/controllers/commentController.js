@@ -14,7 +14,6 @@ export const findAllComment = async (ctx, next) => {
 export const createComment = async (ctx) => {
     let { content, TaskId, file_attach } = ctx.request.body
     try {
-        console.log(ctx.user.id)
         let comment = await CommentService.createComment({ content, TaskId , UserId: ctx.user.id, file_attach})
         ctx.status = 201
         ctx.body = comment
