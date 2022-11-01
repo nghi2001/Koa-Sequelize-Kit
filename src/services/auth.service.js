@@ -34,7 +34,7 @@ export const getNewToken = async (userId, refreshToken) => {
     console.log(userId, refreshToken)
     let user = await UserService.findById(userId)
     if (user.refreshToken != refreshToken) {
-        let err = new ThrowError(403, "Forbiden")
+        ThrowError(403, "Forbiden")
     } else {
         let [newAccessToken, newRefreshToken] = await Promise.all([
             generateAccessToken({ id: userId, username: user.username }),
