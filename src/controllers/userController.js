@@ -4,16 +4,16 @@ import fs from 'fs'
 import { v1 } from 'uuid'
 
 export const create = async (ctx) => {
-    let { username, password, avatar } = ctx.request.body
+    let { username, password } = ctx.request.body
     try {
-        let user = await UserService.createUser(username, password, avatar)
+        let user = await UserService.createUser(username, password)
         ctx.status = 201
         ctx.body = user
 
     } catch (error) {
-        fs.unlink("./public/avatar/" + avatar, (err) => {
-            console.log(err)
-        })
+        // fs.unlink("./public/avatar/" + avatar, (err) => {
+        //     console.log(err)
+        // })
         ctx.app.emit("error", error, ctx)
     }
 }

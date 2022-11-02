@@ -2,13 +2,16 @@ import multer from '@koa/multer'
 import path from 'path'
 import fs from 'fs'
 import Route from '@koa/router'
+import * as MediaController from '../controllers/mediaController'
+import env from '../config/config'
+
 const route = new Route({
     prefix: "/file"
 })
 
 let storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, './public/uploads')
+        callback(null, env("PATH_STORE_FILE"))
     },
     filename: (req, file, callback) => {
         let fileName = Date.now()+path.extname(file.originalname)
@@ -17,35 +20,19 @@ let storage = multer.diskStorage({
     }
 })
 
-route.post("/", (ctx) => {
-    try {
-        let {fileName} = ctx.request.body;
-        fs.unlink("./public/uploads/"+fileName, (err) => {
-            console.log(err);
-        })
-        ctx.body = 'success'
-    } catch (error) {
-        ctx.app.emit("error", error, ctx)
-    }
-})
+route.delete("/:id", MediaController.destroy)
 
 route.post("/single",
     multer({
         storage: storage
     }).single("file")
-    ,(ctx) => {
-        ctx.status = 201;
-        ctx.body = ctx.request.file
-    })
+    ,MediaController.upload)
 
 route.post("/multi",
     multer({
         storage: storage
     }).array("files"),
-    (ctx) => {
-        ctx.status = 201
-        ctx.body = ctx.request.files
-    }
+    MediaController.uploadMany
 )
 
 module.exports = route

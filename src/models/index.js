@@ -50,7 +50,8 @@ const db = {
   models: {
     Task: TaskModel,
     Comment: CommentModel,
-    User: UserModel
+    User: UserModel,
+    Media: MediaModel
   }
 }
 

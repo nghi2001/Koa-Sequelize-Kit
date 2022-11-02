@@ -11,12 +11,12 @@ export const checkUser = async (username) => {
     }
     return true
 }
-export const createUser = async (username, password, avatar) => {
+export const createUser = async (username, password) => {
     let check = await checkUser(username)
     if (check) {
         let salt = await bcrypt.genSalt()
         let hashpass = await bcrypt.hash(password, salt)
-        let user = await UserModel.create({ username, password: hashpass, avatar: avatar })
+        let user = await UserModel.create({ username, password: hashpass })
 
         return user
     }
