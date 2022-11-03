@@ -21,7 +21,8 @@ export const getCommentsByTaskId = async (id) => {
         let comments = await CommentModel.findAndCountAll({
             where: {
                 TaskId: id
-            }
+            },
+            include: ['file_attach']
         })
         return comments
     }

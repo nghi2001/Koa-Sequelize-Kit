@@ -2,6 +2,15 @@ import * as MediaService from '../services/media.service'
 import env from '../config/config'
 import fs from 'fs'
 
+
+export const shows = async (ctx) => {
+    try {
+        let medias = await MediaService.findAll();
+        return ctx.body = medias
+    } catch (error) {
+        ctx.app.emit("error", error, ctx)
+    }
+}
 export const upload = async (ctx) => {
     try {
         let UserId = ctx.request.body.UserId || null

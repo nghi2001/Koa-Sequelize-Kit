@@ -58,3 +58,8 @@ export const detroy = async (id) => {
         return result
     }
 }
+
+export const findAll = async () => {
+    let medias = await MediaModel.findAndCountAll();
+    return medias
+}

@@ -20,6 +20,8 @@ let storage = multer.diskStorage({
     }
 })
 
+route.get("/", MediaController.shows)
+
 route.delete("/:id", MediaController.destroy)
 
 route.post("/single",

@@ -48,7 +48,8 @@ export const findById = async (id) => {
         let user = await UserModel.findOne({
             where: {
                 id: id
-            }
+            },
+            include: ['avatar']
         })
         if (!user) {
             ThrowError(404, "user not found")
