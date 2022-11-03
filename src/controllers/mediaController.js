@@ -32,7 +32,6 @@ export const uploadMany = async (ctx) => {
     let UserId = ctx.request.body.UserId || null
     let CommentId = ctx.request.body.CommentId || null
     try {
-        // console.log(ctx.request.files, CommentId, UserId);
         let result = await MediaService.createMany(ctx.request.files, CommentId, UserId)
         ctx.status = 201
         return ctx.body = result
