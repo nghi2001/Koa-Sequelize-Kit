@@ -2,6 +2,9 @@ import fs from 'fs'
 import db from '../models'
 import bcrypt from 'bcrypt'
 import ThrowError from '../utils/Error'
+import Queue from 'bee-queue'
+const verifyQueue = new Queue('verify')
+const sendMailQueue = new Queue("send_mail")
 const UserModel = db.models.User
 
 export const checkUser = async (username) => {
@@ -11,20 +14,41 @@ export const checkUser = async (username) => {
     }
     return true
 }
-export const createUser = async (username, password) => {
+export const dispathVerifyUser = async (username) => {
+    verifyQueue.createJob({ username })
+        .delayUntil(Date.now() + (1000 * 60 * 10))
+        .retries(2)
+        .save()
+}
+export const dispathSendMail = async (to, subject, code) => {
+    let mail = {
+        to: to,
+        subject: subject,
+        html: `<b>Code active account: ${code}</b>`
+    }
+    sendMailQueue.createJob(mail)
+        .save()
+}
+
+export const createUser = async (username, password, email, code) => {
     let check = await checkUser(username)
     if (check) {
         let salt = await bcrypt.genSalt()
         let hashpass = await bcrypt.hash(password, salt)
-        let user = await UserModel.create({ username, password: hashpass })
-
+        let user = await UserModel.create({ username, password: hashpass, email, code })
+        await dispathSendMail(
+            user.email,
+            'Mail Acctive Account',
+            code
+        )
+        await dispathVerifyUser(user.username)
         return user
     }
 
 }
 
 export const findAll = async () => {
-    let tasks = await UserModel.findAndCountAll({ include: ['tasks','comments'] })
+    let tasks = await UserModel.findAndCountAll({ include: ['tasks', 'comments'] })
     return tasks
 }
 export const checkId = (id) => {
@@ -38,6 +62,17 @@ export const deleteUser = async (id) => {
         let result = await UserModel.destroy({
             where: {
                 id: id
+            }
+        })
+        return result
+    }
+}
+export const deleteUserByUsername = async (username) => {
+    let user = await findbyUserName(username)
+    if (user) {
+        let result = await UserModel.destroy({
+            where: {
+                username: username
             }
         })
         return result
@@ -59,7 +94,7 @@ export const findById = async (id) => {
 }
 
 export const getListTask = async (id) => {
-    if( checkId(id) ) {
+    if (checkId(id)) {
         let user = await UserModel.findOne({
             where: {
                 id: id
@@ -113,7 +148,7 @@ export const updateRefreshToken = async (userId, refreshToken) => {
 }
 
 export const updateAvatar = async (idUser, avatar) => {
-    let result = await UserModel.update({avatar: avatar}, {
+    let result = await UserModel.update({ avatar: avatar }, {
         where: {
             id: idUser
         }
@@ -121,8 +156,41 @@ export const updateAvatar = async (idUser, avatar) => {
     return result
 }
 
-export const deleteAvatar = async (avatar) => {
-    fs.unlink("./public/uploads/"+avatar, (err) => {
-        if(err) ThrowError(409,"can not delete file")
+export const updateStatusUser = async (id, status = true, code) => {
+    let result = await UserModel.update({ is_active: status, code }, {
+        where: {
+            id: id
+        }
     })
+    return result
+}
+
+export const deleteAvatar = async (avatar) => {
+    fs.unlink("./public/uploads/" + avatar, (err) => {
+        if (err) ThrowError(409, "can not delete file")
+    })
+}
+
+export const checkUserIsActive = async (username) => {
+    console.log("checkUser");
+    let user = await findbyUserName(username)
+    let conditions = user && user.is_active
+    if (conditions) {
+        return true
+    }
+    await deleteUserByUsername(username)
+    return false
+}
+
+export const activeUserByCode = async (id, code) => {
+    let user = await findById(id)
+    if (user) {
+        if (user.code === code) {
+            let result = await updateStatusUser(user.id, true, '')
+            return result
+        }
+        return ThrowError(400, "wrong code")
+    } else {
+        ThrowError(404, 'username not exist')
+    }
 }

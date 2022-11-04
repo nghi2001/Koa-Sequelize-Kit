@@ -4,7 +4,7 @@ const route = new Route({
 });
 
 route.get("/init", async (ctx, next) => {
-    await ctx.db.sequelize.sync({})
+    await ctx.db.sequelize.sync({force: true})
     ctx.body = 'success'
 })
 

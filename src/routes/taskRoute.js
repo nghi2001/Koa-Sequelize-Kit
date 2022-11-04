@@ -7,8 +7,9 @@ import * as TaskController from '../controllers/taskController'
 const route = new Route({
     prefix: "/task"
 })
-route.get("/:id", TaskController.findById)
 
+route.get("/expiration", TaskController.taskExpired)
+route.get("/:id", TaskController.findById)
 route.get("/", TaskController.findAll)
 route.post('/', verifyToken, createTaskMiddleware, TaskController.create)
 

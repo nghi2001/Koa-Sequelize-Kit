@@ -1,5 +1,7 @@
+import { Op } from 'sequelize'
 import db from '../models'
 const TaskModel = db.models.Task
+const UserModel = db.models.User
 import ThrowError from '../utils/Error'
 export const checkId = (id) => {
     if (!Number(id) || id < 0) {
@@ -61,4 +63,20 @@ export const updateTask = async (Task, taskId) => {
         })
         return result
     }
+}
+
+export const taskExpired = async () => {
+    let now = Date.now()
+    let taskexp = await TaskModel.findAll({
+        where: {
+            expiration_date: {
+                [Op.lte]: now
+            },
+            state: {
+                [Op.ne]: 'Done'
+            }
+        },
+        include: [UserModel]
+    })
+    return taskexp
 }

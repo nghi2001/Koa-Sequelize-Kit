@@ -14,6 +14,10 @@ export default (sequelize, Type) => {
             allowNull: false,
             defaultValue: "TODO"
         },
+        expiration_date: {
+            type: Type.DATE,
+            allowNull: true
+        },
         UserId: {
             type: Type.INTEGER,
             allowNull: false

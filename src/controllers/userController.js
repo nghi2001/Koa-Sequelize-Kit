@@ -1,19 +1,17 @@
 import * as UserService from '../services/user.service'
 import XlsxPopulate from 'xlsx-populate'
-import fs from 'fs'
+import { generateCode } from '../utils/GenerateCode'
 import { v1 } from 'uuid'
 
 export const create = async (ctx) => {
-    let { username, password } = ctx.request.body
+    let { username, password, email } = ctx.request.body
     try {
-        let user = await UserService.createUser(username, password)
+        let code = generateCode()
+        let user = await UserService.createUser(username, password, email, code)
         ctx.status = 201
         ctx.body = user
 
     } catch (error) {
-        // fs.unlink("./public/avatar/" + avatar, (err) => {
-        //     console.log(err)
-        // })
         ctx.app.emit("error", error, ctx)
     }
 }
@@ -82,7 +80,7 @@ export const exportExcel = async (ctx) => {
         })
     let filename = `${v1()}.xlsx`;
     ctx.response.set("content-type", "application/vnd.ms-excel")
-    ctx.response.set('Content-Disposition', 'attachment; filename='+filename)
+    ctx.response.set('Content-Disposition', 'attachment; filename=' + filename)
     ctx.body = workbook
 }
 
@@ -96,6 +94,16 @@ export const updateAvatar = async (ctx) => {
             UserService.deleteAvatar(user.avatar)
         }
         return ctx.body = result
+    } catch (error) {
+        ctx.app.emit("error", error, ctx)
+    }
+}
+
+export const activeUser = async (ctx) => {
+    let { code } = ctx.request.body
+    try {
+        let result = await UserService.activeUserByCode(ctx.user.id, code)
+        ctx.body = result
     } catch (error) {
         ctx.app.emit("error", error, ctx)
     }

@@ -23,9 +23,9 @@ export const findAll = async (ctx, next) => {
 }
 
 export const create = async (ctx) => {
-    let { name, body } = ctx.request.body
+    let { name, body, expiration_date } = ctx.request.body
     try {
-        let newTask = await TaskService.createTask({ name, body, UserId: ctx.user.id })
+        let newTask = await TaskService.createTask({ name, body, UserId: ctx.user.id, expiration_date })
         if (newTask) {
             ctx.status = 201
             return ctx.body = newTask
@@ -62,4 +62,15 @@ export const update = async (ctx) => {
     } catch (error) {
         ctx.app.emit('error', error, ctx)
     }
+}
+
+export const taskExpired = async (ctx) => {
+    try {
+        let taskexp = await TaskService.taskExpired()
+
+        ctx.body = taskexp
+
+    } catch (error) {
+        ctx.app.emit('error', error, ctx)
+    }   
 }
